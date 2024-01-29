@@ -1,11 +1,11 @@
-﻿using API.Pedido.Controllers.Base;
+﻿using API.Controllers.Base;
 using Application.Commands.Pedidos;
 using Domain.Adapters;
 using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Pedido.Controllers
+namespace API.Controllers
 {
     public class PedidoController : BaseController
     {

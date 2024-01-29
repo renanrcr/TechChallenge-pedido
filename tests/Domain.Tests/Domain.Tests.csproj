@@ -22,4 +22,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
+    <ProjectReference Include="..\Infrastructure.Tests\Infrastructure.Tests.csproj" />
+  </ItemGroup>
+
 </Project>

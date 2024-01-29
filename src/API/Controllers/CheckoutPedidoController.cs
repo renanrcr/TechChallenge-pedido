@@ -1,10 +1,10 @@
-﻿using API.Pedido.Controllers.Base;
+﻿using API.Controllers.Base;
 using Application.Commands;
 using Domain.Adapters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Pedido.Controllers
+namespace API.Controllers
 {
     public class CheckoutPedidoController : BaseController
     {

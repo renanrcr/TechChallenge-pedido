@@ -1,5 +1,6 @@
 ﻿using Domain.Adapters;
 using Domain.Entities;
+using Domain.ValueObjects;
 using FluentValidation;
 
 namespace Domain.Validations.ItensPedido.Base
@@ -36,7 +37,7 @@ namespace Domain.Validations.ItensPedido.Base
         public void ValidarExisteProdutoCadastrado()
         {
             RuleFor(s => s.Id).NotEmpty()
-                .MustAsync(ExisteProduto).WithMessage("Produto não cadastrado.");
+                .MustAsync(ExisteProduto).WithMessage(MensagemRetorno.ProdutoNaoCadastrado);
         }
 
         private async Task<bool> ExisteProduto(Guid id, CancellationToken token)

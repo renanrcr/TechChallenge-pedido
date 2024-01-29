@@ -25,7 +25,7 @@ namespace Domain.Entities
             return this;
         }
 
-        public async Task<Pedido> Atualizar(string? numeroPedido,  Guid identificacaoPedidoId)
+        public async Task<Pedido> Atualizar(string? numeroPedido, Guid identificacaoPedidoId)
         {
             Id = Guid.NewGuid();
             NumeroPedido = numeroPedido;

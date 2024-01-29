@@ -1,7 +1,7 @@
 ﻿using Domain.Adapters;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Pedido.Controllers.Base
+namespace API.Controllers.Base
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Validations;
 using FluentValidation;
 
 namespace Domain.Validations.Pedidos.Base

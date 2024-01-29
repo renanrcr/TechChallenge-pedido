@@ -1,4 +1,4 @@
-﻿using API.Pedido.Controllers.Base;
+﻿using API.Controllers.Base;
 using Application.Commands.IdentificacoesPedido;
 using Application.DTOs;
 using AutoMapper;
@@ -6,7 +6,7 @@ using Domain.Adapters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Pedido.Controllers
+namespace API.Controllers
 {
     public class IdentificacaoController : BaseController
     {
