@@ -11,7 +11,6 @@ namespace Infrastructure.Context
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        public DbSet<CategoriaProduto> CategoriaProdutos { get; set; }
         public DbSet<IdentificacaoPedido> IdentificacaoPedidos { get; set; }
         public DbSet<ItemPedido> ItensPedido { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }

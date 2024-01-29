@@ -8,7 +8,6 @@ namespace Application.AutoMapper
     {
         public AutoMapperConfig()
         {
-            CreateMap<CategoriaProdutoDTO, CategoriaProduto>().ReverseMap();
             CreateMap<ProdutoDTO, Produto>().ReverseMap();
             CreateMap<IdentificacaoPedidoDTO, IdentificacaoPedido>().ReverseMap();
             CreateMap<PedidoDTO, Pedido>().ReverseMap();
