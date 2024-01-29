@@ -12,7 +12,6 @@ namespace Infrastructure.Context
         }
 
         public DbSet<CategoriaProduto> CategoriaProdutos { get; set; }
-        public DbSet<Cliente> Clientes { get; set; }
         public DbSet<IdentificacaoPedido> IdentificacaoPedidos { get; set; }
         public DbSet<ItemPedido> ItensPedido { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
