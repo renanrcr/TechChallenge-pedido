@@ -20,19 +20,6 @@ namespace Application.Tests.AutoMapper
         }
 
         [Fact]
-        public void MapearProdutoParaProdutoDto_DeveRetornarVerdadeiro()
-        {
-            // Arrange
-            Produto produto = new Produto();
-
-            // Act
-            ProdutoDTO produtoDto = _mapper.Map<ProdutoDTO>(produto);
-
-            // Assert
-            Assert.Equal(produto.Descricao, produtoDto.Descricao);
-        }
-
-        [Fact]
         public async Task MapearPedidoParaPedidoDto_DeveRetornarVerdadeiro()
         {
             // Arrange

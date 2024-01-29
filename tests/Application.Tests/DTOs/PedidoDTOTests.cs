@@ -6,7 +6,7 @@ namespace Application.Tests.DTOs
     public class PedidoDTOTests
     {
         [Fact]
-        public void PedidoDto_DeveRetornarVerdadeiro()
+        public void PedidoDTO_DeveRetornarVerdadeiro()
         {
             // Arrange
             Guid pedidoID = Guid.NewGuid();

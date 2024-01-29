@@ -33,7 +33,7 @@ namespace Infrastructure.Tests.Repositories
         public async Task Pedido_DeveRetornarVerdadeiro_QuandoEncontrarOPedidoPeloID()
         {
             //Arrange
-            Pedido primeiroPedido = (await _pedidoRepository.ObterTodos()).FirstOrDefault() ?? new Pedido();
+            Pedido primeiroPedido = (await _pedidoRepository.ObterTodos()).FirstOrDefault() ?? new();
             Guid id = primeiroPedido.Id;
 
             //Act
@@ -69,13 +69,13 @@ namespace Infrastructure.Tests.Repositories
         public async Task Pedido_DeveRetornarVerdadeiro_QuandoAtualizarPedido()
         {
             //Arrange
-            Guid id = (_pedidoRepository.ObterTodos().Result.FirstOrDefault() ?? new Pedido()).Id;
-            Pedido pedidoCadastrado = await _pedidoRepository.ObterPorId(id) ?? new Pedido();
+            Guid id = (_pedidoRepository.ObterTodos().Result.FirstOrDefault() ?? new()).Id;
+            Pedido pedidoCadastrado = await _pedidoRepository.ObterPorId(id) ?? new();
             pedidoCadastrado.StatusPedido = Domain.Enums.EStatusPedido.RECEBIDO;
 
             //Act
             await _pedidoRepository.Atualizar(pedidoCadastrado);
-            Pedido? pedidoAtualizado = await _pedidoRepository.ObterPorId(pedidoCadastrado.Id) ?? new Pedido();
+            Pedido? pedidoAtualizado = await _pedidoRepository.ObterPorId(pedidoCadastrado.Id) ?? new();
 
             //Assert
             Assert.Multiple(() =>
@@ -89,7 +89,7 @@ namespace Infrastructure.Tests.Repositories
         public async Task Pedido_DeveRetornarVerdadeiro_QuandoRemoverPedido()
         {
             //Arrange
-            Pedido pedido = (await _pedidoRepository.ObterTodos()).FirstOrDefault() ?? new Pedido();
+            Pedido pedido = (await _pedidoRepository.ObterTodos()).FirstOrDefault() ?? new();
 
             //Act
             await _pedidoRepository.Remover(pedido);

@@ -14,6 +14,7 @@ namespace Application.Tests.Services.Handlers
         private readonly IItemPedidoRepository _itemPedidoRepository;
         private readonly INotificador _notificador;
         private readonly IMapper _mapper;
+        private readonly PedidoHandler _pedidoHandler;
 
         public PedidoHandlerTests()
         {
@@ -23,25 +24,65 @@ namespace Application.Tests.Services.Handlers
 
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperConfig>());
             _mapper = config.CreateMapper();
+
+            _pedidoHandler = new PedidoHandler(_notificador, _pedidoRepository, _itemPedidoRepository, _mapper);
         }
 
         [Fact]
-        public void Pedido_DeveRetornarVerdadeiro_QuandoCadastrarNovoPedido()
+        public void Pedido_DeveRetornarVerdadeiro_QuandoCadastrarNovo()
         {
             //Arrange
-            PedidoHandler pedidoHandler = new PedidoHandler(_notificador, _pedidoRepository, _itemPedidoRepository, _mapper);
 
-            var cadastraPedidoCommand = new CadastraPedidoCommand()
+            var command = new CadastraPedidoCommand()
             {
                IdentificacaoClienteId = Guid.NewGuid(),
             };
 
             //Act
-            var result = pedidoHandler.Handle(cadastraPedidoCommand, default).Result;
+            var result = _pedidoHandler.Handle(command, default).Result;
 
             //Assert
             Assert.NotNull(result);
             Assert.True(string.IsNullOrEmpty(result.NumeroPedido));
+        }
+
+        [Fact]
+        public void Pedido_DeveRetornarVerdadeiro_QuandoAtualizar()
+        {
+            //Arrange
+            var dado = _pedidoRepository.ObterTodos().Result.FirstOrDefault() ?? new();
+
+            var command = new AtualizaPedidoCommand()
+            {
+                NumeroPedido = dado.NumeroPedido,
+                IdentificacaoPedidoId = dado.IdentificacaoPedidoId,
+            };
+
+            //Act
+            var result = _pedidoHandler.Handle(command, default).Result;
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.True(string.IsNullOrEmpty(result.NumeroPedido));
+        }
+
+        [Fact]
+        public void Pedido_DeveRetornarVerdadeiro_QuandoRemover()
+        {
+            //Arrange
+            var dado = _pedidoRepository.ObterTodos().Result.FirstOrDefault() ?? new();
+
+            var command = new DeletaPedidoCommand()
+            {
+                Id = dado.Id,
+            };
+
+            //Act
+            var result = _pedidoHandler.Handle(command, default).Result;
+
+            //Assert
+            Assert.Null(result);
+            Assert.False(string.IsNullOrEmpty(result.NumeroPedido));
         }
     }
 }

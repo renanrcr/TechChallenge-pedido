@@ -12,14 +12,26 @@ namespace Domain.Entities
 
         public async Task<IdentificacaoPedido> Cadastrar(IIdentificacaoPedidoRepository identificacaoPedidoRepository, string? valor, int tipoIdentificacaoPedido)
         {
+            NewInstance(valor, tipoIdentificacaoPedido);
+
+            await Validate(this, new CadastraIdentificacaoPedidoValidation(identificacaoPedidoRepository));
+
+            return this;
+        }
+
+        public IdentificacaoPedido NewInstance(string? valor, int tipoIdentificacaoPedido)
+        {
             Id = Guid.NewGuid();
             Valor = valor;
             TipoIdentificacaoPedido = (ETipoIdentificacaoPedido)tipoIdentificacaoPedido;
             DataCadastro = DateTime.Now;
 
-            await Validate(this, new CadastraIdentificacaoPedidoValidation(identificacaoPedidoRepository));
-
             return this;
+        }
+
+        public void AtualizarIdentificacaoPedido(ETipoIdentificacaoPedido eTipoIdentificacaoPedido)
+        {
+            TipoIdentificacaoPedido = eTipoIdentificacaoPedido;
         }
     }
 }
