@@ -8,7 +8,7 @@ namespace Domain.Entities
         public Guid PedidoId { get; private set; }
         public Guid ProdutoId { get; private set; }
         public decimal Quantidade { get; private set; }
-        public Produto Produto { get; private set; } = new Produto();
+        public Produto Produto { get; private set; } = new();
         public Pedido? Pedido { get; private set; }
 
         public async Task<ItemPedido> Cadastrar(IProdutoRepository produtoRepository, Guid pedidoId, Guid produtoId, decimal quantidade)

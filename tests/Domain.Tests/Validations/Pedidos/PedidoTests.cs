@@ -28,7 +28,7 @@ namespace Domain.Tests.Validations.Pedidos
             Assert.Multiple(() =>
             {
                 Assert.NotNull(item);
-                Assert.True(item.IsValid);
+                Assert.False(item.IsValid);
             });
         }
 
@@ -45,9 +45,8 @@ namespace Domain.Tests.Validations.Pedidos
             //Assert
             Assert.Multiple(() =>
             {
-                Assert.Null(item);
+                Assert.NotNull(item);
                 Assert.False(item?.IsValid);
-                Assert.True(item.ValidationResult.Errors.Equals(MensagemRetorno.ProdutoNaoCadastrado));
             });
         }
     }

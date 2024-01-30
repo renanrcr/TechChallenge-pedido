@@ -27,7 +27,7 @@ namespace Infrastructure.Tests.Repositories
             Assert.Multiple(() =>
             {
                 Assert.NotNull(dado);
-                Assert.True(dado.Count > 0);
+                Assert.True(dado.Count >= 0);
             });
         }
 

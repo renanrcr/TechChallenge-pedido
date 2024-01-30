@@ -32,7 +32,7 @@ namespace Application.Services.Handlers
 
             var identificacaoPedido = await CadastraIdentificacaoCliente(request.TipodIdentificacaoCliente, request.IdentificacaoCliente);
 
-            if (!_notificador.TemNotificacao())
+            if (!_notificador.TemNotificacao() && identificacaoPedido != null)
             {
                 var retornoPedido = await CadastraPedido(identificacaoPedido.Id);
 
