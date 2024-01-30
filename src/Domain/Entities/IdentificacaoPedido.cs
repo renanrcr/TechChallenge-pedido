@@ -25,6 +25,7 @@ namespace Domain.Entities
             Valor = valor;
             TipoIdentificacaoPedido = (ETipoIdentificacaoPedido)tipoIdentificacaoPedido;
             DataCadastro = DateTime.Now;
+            Pedido = new();
 
             return this;
         }
