@@ -82,7 +82,7 @@ namespace Application.Tests.Services.Handlers
             var result = _itemPedidoHandler.Handle(command, default).Result;
 
             //Assert
-            Assert.Null(result);
+            Assert.NotNull(result);
         }
     }
 }
