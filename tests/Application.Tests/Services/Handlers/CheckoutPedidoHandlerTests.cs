@@ -45,7 +45,7 @@ namespace Application.Tests.Services.Handlers
 
             //Assert
             Assert.NotNull(result);
-            Assert.True(string.IsNullOrEmpty(result.Pedido.NumeroPedido));
+            Assert.Null(result.Pedido);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Domain.Entities
 
         public async Task<Pedido> Atualizar(string? numeroPedido, Guid identificacaoPedidoId)
         {
-            Id = Guid.NewGuid();
+            Id = identificacaoPedidoId;
             NumeroPedido = numeroPedido;
             IdentificacaoPedidoId = identificacaoPedidoId;
             DataAtualizacao = DateTime.Now;
