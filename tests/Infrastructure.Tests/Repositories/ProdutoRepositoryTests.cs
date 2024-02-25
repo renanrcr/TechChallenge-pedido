@@ -90,11 +90,12 @@ namespace Infrastructure.Tests.Repositories
             var dado = (await _produtoRepository.ObterTodos()).FirstOrDefault() ?? new();
 
             //Act
-            _produtoRepository.Remover(dado);
+            await _produtoRepository.Remover(dado);
             var dadoRemovido = await _produtoRepository.ObterPorId(dado.Id);
 
             //Assert
-            Assert.Null(dadoRemovido.ItemPedido);
+            Assert.Null(dadoRemovido);
+            Assert.Null((dadoRemovido??new Produto()).ItemPedido);
         }
     }
 }

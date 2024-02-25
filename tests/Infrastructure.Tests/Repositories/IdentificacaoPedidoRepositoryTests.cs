@@ -54,7 +54,7 @@ namespace Infrastructure.Tests.Repositories
             IdentificacaoPedido identificacaoPedido = new IdentificacaoPedido().NewInstance(Guid.NewGuid().ToString(), (int)ETipoIdentificacaoPedido.NAO_IDENTIFICADO);
 
             //Act
-            _identificacaoPedidoRepository.Adicionar(identificacaoPedido);
+            await _identificacaoPedidoRepository.Adicionar(identificacaoPedido);
             IdentificacaoPedido? identificacaoPedidoAdicionado = await _identificacaoPedidoRepository.ObterPorId(identificacaoPedido.Id);
 
             //Assert
