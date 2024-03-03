@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Adapters;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.ValueObjects;
 using MediatR;
 
 namespace Application.Services.Handlers
@@ -36,7 +37,11 @@ namespace Application.Services.Handlers
             Notificar(entidade.ValidationResult);
 
             if (entidade.IsValid)
-                await _pedidoRepository.Adicionar(entidade);
+            {
+                bool inseriuPedido = await _pedidoRepository.InserirPedido(entidade);
+                if(!inseriuPedido)
+                    Notificar(MensagemRetorno.ErroAoCadastrarPedido);
+            }
 
             return _mapper.Map<PedidoDTO>(entidade);
         }
@@ -60,7 +65,11 @@ namespace Application.Services.Handlers
             Notificar(entidade.ValidationResult);
 
             if (entidade.IsValid)
-                await _pedidoRepository.Atualizar(entidade);
+            {
+                bool deletouPedido = await _pedidoRepository.DeletarPedido(entidade.Id);
+                if (!deletouPedido)
+                    Notificar(MensagemRetorno.ErroAoDeletarPedido);
+            }
 
             return _mapper.Map<PedidoDTO>(entidade);
         }
@@ -69,9 +78,10 @@ namespace Application.Services.Handlers
         {
             var retorno = new List<PedidosDTO>();
 
-            var pedidos = (await _pedidoRepository.ObterTodos()).Where(x => x.StatusPedido != EStatusPedido.FINALIZADO);
+            var pedidos = await _pedidoRepository.ObterPedido();
 
             pedidos
+                .Where(x => x.StatusPedido != EStatusPedido.FINALIZADO)
                 .OrderBy(x => x.StatusPedido)
                 .ToList()
                 .ForEach(async x =>
@@ -82,7 +92,7 @@ namespace Application.Services.Handlers
                         StatusPedido = x.StatusPedido.ToString(),
                     };
 
-                    var itensPedido = await _itemPedidoRepository.Buscar(x => x.PedidoId == x.Id);
+                    var itensPedido = await _itemPedidoRepository.ObterItensDoPedidos(x.Id);
 
                     itensPedido.ToList().ForEach(y =>
                     {

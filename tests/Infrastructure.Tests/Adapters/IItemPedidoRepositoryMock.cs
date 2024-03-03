@@ -9,7 +9,9 @@ namespace Infrastructure.Tests.Adapters
         public static IItemPedidoRepository GetMock()
         {
             var dbContext = DbContextMock.CreateDbContext();
-            return new ItemPedidoRepository(dbContext);
+            var mongoDb = DbContextMock.CreateMongoDb();
+
+            return new ItemPedidoRepository(dbContext, mongoDb);
         }
     }
 }

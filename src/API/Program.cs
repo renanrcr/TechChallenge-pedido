@@ -1,9 +1,8 @@
 using Infrastructure.Configuration;
-using Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Application;
 using Application.Services.Handlers;
+using API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,14 +12,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-var server = builder.Configuration["DbServer"] ?? "localhost";
-var port = builder.Configuration["DbPort"] ?? "1433"; // Default SQL Server port
-var user = builder.Configuration["DbUser"] ?? "SA"; // Warning do not use the SA account
-var password = builder.Configuration["Password"] ?? "TechChallenge#Lanchonete";
-var database = builder.Configuration["Database"] ?? "lanchonete_pedido";
-var connectionString = $"Server={server}, {port};Initial Catalog={database};User ID={user};Password={password};TrustServerCertificate=true";
-builder.Services.AddDbContext<DataBaseContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.AddSqlServerDbContext();
+
+builder.Services.AddMongoDb();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(Program)));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(PedidoHandler)));

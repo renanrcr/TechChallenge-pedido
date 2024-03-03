@@ -18,9 +18,10 @@ services:
         DbPort: "1433"
         DbUser: "SA"
         Password: "TechChallenge#Lanchonete"
-        Database: "lanchonete_pedido"
+        Database: "lanchonete"
     depends_on:
       - sqlserver
+      - mongodb
 
   sqlserver:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
@@ -40,6 +41,17 @@ services:
       - "11433:1433"
     expose:
       - 1433
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: 'mongodb'
+    networks:
+      - techchallenge-bridge
+    ports:
+      - "27017:27017"
+    expose:
+      - 27017
 
 networks:
   techchallenge-bridge:
