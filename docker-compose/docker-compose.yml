@@ -6,7 +6,7 @@ services:
     container_name: lanchonete-app
     build:
       context: ../
-      dockerfile: src/Dockerfile
+      dockerfile: src/api/Dockerfile
     networks:
       - techchallenge-bridge
     ports:
@@ -17,10 +17,11 @@ services:
         DbServer: "sqlserver"
         DbPort: "1433"
         DbUser: "SA"
-        Password: "TechChallenge#Fase02"
-        Database: "Lanchonete"
+        Password: "TechChallenge#Lanchonete"
+        Database: "lanchonete"
     depends_on:
       - sqlserver
+      - mongodb
 
   sqlserver:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
@@ -28,7 +29,7 @@ services:
     hostname: 'sqlserver'
     environment:
       ACCEPT_EULA: 'Y'
-      SA_PASSWORD: "TechChallenge#Fase02"
+      SA_PASSWORD: "TechChallenge#Lanchonete"
       MSSQL_PID: Express
     volumes:
       - c:/dados/volumes/mssql/data:/var/opt/mssql/data
@@ -40,6 +41,17 @@ services:
       - "11433:1433"
     expose:
       - 1433
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: 'mongodb'
+    networks:
+      - techchallenge-bridge
+    ports:
+      - "27017:27017"
+    expose:
+      - 27017
 
 networks:
   techchallenge-bridge:

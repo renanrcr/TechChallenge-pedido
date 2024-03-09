@@ -30,7 +30,7 @@ namespace API.Controllers
         {
             if (!ModelState.IsValid) return null;
 
-            return Ok(_mapper.Map<IEnumerable<ItemPedidoDTO>>(await _itemPedidoRepository.ObterTodos()));
+            return Ok(_mapper.Map<IEnumerable<ItemPedidoDTO>>(await _itemPedidoRepository.ObterItensDosPedidos()));
         }
 
         [HttpPost]

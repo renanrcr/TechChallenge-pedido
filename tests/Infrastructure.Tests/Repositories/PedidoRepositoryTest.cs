@@ -73,7 +73,7 @@ namespace Infrastructure.Tests.Repositories
             pedidoCadastrado.StatusPedido = Domain.Enums.EStatusPedido.RECEBIDO;
 
             //Act
-            _pedidoRepository.Atualizar(pedidoCadastrado);
+            await _pedidoRepository.Atualizar(pedidoCadastrado);
             Pedido? pedidoAtualizado = await _pedidoRepository.ObterPorId(pedidoCadastrado.Id) ?? new();
 
             //Assert
