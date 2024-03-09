@@ -3,6 +3,7 @@ using Application.DTOs;
 using AutoMapper;
 using Domain.Adapters;
 using Domain.Entities;
+using Domain.ValueObjects;
 using MediatR;
 
 namespace Application.Services.Handlers
@@ -34,7 +35,12 @@ namespace Application.Services.Handlers
             Notificar(entidade.ValidationResult);
 
             if (entidade.IsValid)
-                await _itemPedidoRepository.Adicionar(entidade);
+            {
+                bool inseriuItemPedido = await _itemPedidoRepository.InserirItemPedido(entidade);
+                if (!inseriuItemPedido)
+                    Notificar(MensagemRetorno.ErroAoAdicionarItemPedido);
+            }
+                
 
             return _mapper.Map<ItemPedidoDTO>(entidade);
         }
@@ -46,7 +52,7 @@ namespace Application.Services.Handlers
             Notificar(entidade.ValidationResult);
 
             if (entidade.IsValid)
-                await _itemPedidoRepository.Atualizar(entidade);
+                await _itemPedidoRepository.AtualizarQuantidadeItemPedido(entidade);
 
             return _mapper.Map<ItemPedidoDTO>(entidade);
         }
@@ -58,7 +64,7 @@ namespace Application.Services.Handlers
             Notificar(entidade.ValidationResult);
 
             if (entidade.IsValid)
-                await _itemPedidoRepository.Atualizar(entidade);
+                await _itemPedidoRepository.AtualizarQuantidadeItemPedido(entidade);
 
             return _mapper.Map<ItemPedidoDTO>(entidade);
         }

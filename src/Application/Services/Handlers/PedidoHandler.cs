@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Adapters;
 using Domain.Entities;
 using Domain.Enums;
+using Domain.ValueObjects;
 using MediatR;
 
 namespace Application.Services.Handlers
@@ -36,7 +37,11 @@ namespace Application.Services.Handlers
             Notificar(entidade.ValidationResult);
 
             if (entidade.IsValid)
-                await _pedidoRepository.Adicionar(entidade);
+            {
+                bool inseriuPedido = await _pedidoRepository.InserirPedido(entidade);
+                if(!inseriuPedido)
+                    Notificar(MensagemRetorno.ErroAoCadastrarPedido);
+            }
 
             return _mapper.Map<PedidoDTO>(entidade);
         }
@@ -60,54 +65,54 @@ namespace Application.Services.Handlers
             Notificar(entidade.ValidationResult);
 
             if (entidade.IsValid)
-                await _pedidoRepository.Atualizar(entidade);
+            {
+                bool deletouPedido = await _pedidoRepository.DeletarPedido(entidade.Id);
+                if (!deletouPedido)
+                    Notificar(MensagemRetorno.ErroAoDeletarPedido);
+            }
 
             return _mapper.Map<PedidoDTO>(entidade);
         }
 
-        public Task<IList<PedidosDTO>> Handle(ListaPedidoCommand request, CancellationToken cancellationToken)
+        public async Task<IList<PedidosDTO>> Handle(ListaPedidoCommand request, CancellationToken cancellationToken)
         {
             var retorno = new List<PedidosDTO>();
 
-            var task = Task.Run(async () =>
-            {
-                var pedidos = (await _pedidoRepository.ObterTodos()).Where(x => x.StatusPedido != EStatusPedido.FINALIZADO);
+            var pedidos = await _pedidoRepository.ObterPedido();
 
-                pedidos
-                    .OrderBy(x => x.StatusPedido)
-                    .ToList()
-                    .ForEach(async x =>
+            pedidos
+                .Where(x => x.StatusPedido != EStatusPedido.FINALIZADO)
+                .OrderBy(x => x.StatusPedido)
+                .ToList()
+                .ForEach(async x =>
+                {
+                    var pedido = new PedidosDTO
                     {
-                        var pedido = new PedidosDTO
+                        NumeroPedido = x.NumeroPedido,
+                        StatusPedido = x.StatusPedido.ToString(),
+                    };
+
+                    var itensPedido = await _itemPedidoRepository.ObterItensDoPedidos(x.Id);
+
+                    itensPedido.ToList().ForEach(y =>
+                    {
+                        var itemPedido = new ItensDTO()
                         {
-                            NumeroPedido = x.NumeroPedido,
-                            StatusPedido = x.StatusPedido.ToString(),
+                            Nome = y.Produto.Nome,
+                            Quantidade = y.Quantidade,
+                            Valor = y.Produto.TabelaPreco.IsValid ? y.Produto.TabelaPreco.Preco : 0,
                         };
 
-                        var itensPedido = await _itemPedidoRepository.Buscar(x => x.PedidoId == x.Id);
-
-                        itensPedido.ToList().ForEach(y =>
-                        {
-                            var itemPedido = new ItensDTO()
-                            {
-                                Nome = y.Produto.Nome,
-                                Quantidade = y.Quantidade,
-                                Valor = y.Produto.TabelaPreco.IsValid ? y.Produto.TabelaPreco.Preco : 0,
-                            };
-
-                            pedido.ItensPedido.Add(itemPedido);
-                        });
-
-                        pedido.QuantidadeItens = pedido.ItensPedido.Sum(x => x.Quantidade);
-                        pedido.TotalDoPedido = pedido.ItensPedido.Sum(x => x.Valor);
-
-                        retorno.Add(pedido);
+                        pedido.ItensPedido.Add(itemPedido);
                     });
-            });
 
-            task.Wait();
+                    pedido.QuantidadeItens = pedido.ItensPedido.Sum(x => x.Quantidade);
+                    pedido.TotalDoPedido = pedido.ItensPedido.Sum(x => x.Valor);
 
-            return Task.FromResult<IList<PedidosDTO>>(retorno);
+                    retorno.Add(pedido);
+                });
+
+            return retorno;
         }
     }
 }

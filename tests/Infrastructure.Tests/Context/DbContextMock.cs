@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace Infrastructure.Tests.Context
 {
@@ -14,6 +15,15 @@ namespace Infrastructure.Tests.Context
             var dbContext = new DataBaseContext(options);
 
             return dbContext;
+        }
+
+        public static IMongoDatabase CreateMongoDb()
+        {
+            var coonectionStringMongoDB = "mongodb://mongodb:27017";
+            var mongoClient = new MongoClient(coonectionStringMongoDB);
+            var databaseMongoDB = mongoClient.GetDatabase("Pedido");
+
+            return databaseMongoDB;
         }
     }
 }
