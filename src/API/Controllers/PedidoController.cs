@@ -38,5 +38,17 @@ namespace API.Controllers
 
             return Ok(entidade);
         }
+
+        [HttpPost]
+        public async Task<IActionResult?> CriarPedido(CriarPedidoCommand command)
+        {
+            if (!ModelState.IsValid) return null;
+
+            var entidade = await _mediator.Send(command);
+
+            if (!IsOperacaoValida) return BadRequest(ObterNotificacoes());
+
+            return Ok(entidade);
+        }
     }
 }

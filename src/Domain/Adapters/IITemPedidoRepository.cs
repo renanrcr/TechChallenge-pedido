@@ -6,7 +6,7 @@ namespace Domain.Adapters
     {
         Task<IList<ItemPedido>> ObterItensDosPedidos();
 
-        Task<IList<ItemPedido>> ObterItensDoPedidos(Guid pedidoId);
+        Task<IList<ItemPedido>> ObterItensDoPedido(Guid pedidoId);
 
         Task<bool> InserirItemPedido(ItemPedido itemPedido);
 
