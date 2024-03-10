@@ -1,5 +1,6 @@
 ﻿using Application.AutoMapper;
 using Application.Commands.Pedidos;
+using Application.Services;
 using Application.Services.Handlers;
 using AutoMapper;
 using Domain.Adapters;
@@ -15,17 +16,19 @@ namespace Application.Tests.Services.Handlers
         private readonly INotificador _notificador;
         private readonly IMapper _mapper;
         private readonly PedidoHandler _pedidoHandler;
+        private readonly IMessageService _messageService;
 
         public PedidoHandlerTests()
         {
             _pedidoRepository = IPedidoRepositoryMock.GetMock();
             _itemPedidoRepository = IItemPedidoRepositoryMock.GetMock();
-            _notificador = new Notificador(); 
+            _notificador = new Notificador();
+            _messageService = new MessageService();
 
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperConfig>());
             _mapper = config.CreateMapper();
 
-            _pedidoHandler = new PedidoHandler(_notificador, _pedidoRepository, _itemPedidoRepository, _mapper);
+            _pedidoHandler = new PedidoHandler(_notificador, _pedidoRepository, _itemPedidoRepository, _mapper, _messageService);
         }
 
         [Fact]
