@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories
             return await _itensPedidoCollection.Find(_ => true).ToListAsync();
         }
 
-        public async Task<IList<ItemPedido>> ObterItensDoPedidos(Guid pedidoId)
+        public async Task<IList<ItemPedido>> ObterItensDoPedido(Guid pedidoId)
         {
             return await _itensPedidoCollection.Find(x => x.PedidoId == pedidoId).ToListAsync();
         }

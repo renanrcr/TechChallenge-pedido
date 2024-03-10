@@ -13,21 +13,25 @@ namespace Application.Services.Handlers
         IRequestHandler<CadastraPedidoCommand, PedidoDTO>,
         IRequestHandler<AtualizaPedidoCommand, PedidoDTO>,
         IRequestHandler<DeletaPedidoCommand, PedidoDTO>,
-        IRequestHandler<ListaPedidoCommand, IList<PedidosDTO>>
+        IRequestHandler<ListaPedidoCommand, IList<PedidosDTO>>,
+        IRequestHandler<CriarPedidoCommand, bool>
     {
         private readonly IMapper _mapper;
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IItemPedidoRepository _itemPedidoRepository;
+        private readonly IMessageService _messageService;
 
         public PedidoHandler(INotificador notificador,
             IPedidoRepository pedidoRepository,
             IItemPedidoRepository itemPedidoRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IMessageService messageService)
             : base(notificador)
         {
             _pedidoRepository = pedidoRepository;
             _mapper = mapper;
             _itemPedidoRepository = itemPedidoRepository;
+            _messageService = messageService;
         }
 
         public async Task<PedidoDTO> Handle(CadastraPedidoCommand request, CancellationToken cancellationToken)
@@ -92,7 +96,7 @@ namespace Application.Services.Handlers
                         StatusPedido = x.StatusPedido.ToString(),
                     };
 
-                    var itensPedido = await _itemPedidoRepository.ObterItensDoPedidos(x.Id);
+                    var itensPedido = await _itemPedidoRepository.ObterItensDoPedido(x.Id);
 
                     itensPedido.ToList().ForEach(y =>
                     {
@@ -113,6 +117,46 @@ namespace Application.Services.Handlers
                 });
 
             return retorno;
+        }
+
+        public async Task<bool> Handle(CriarPedidoCommand request, CancellationToken cancellationToken)
+        {
+            var pedido = (await _pedidoRepository.Buscar(x => x.NumeroPedido == request.NumeroPedido)).FirstOrDefault();
+            if (pedido == null)
+            {
+                Notificar(MensagemRetorno.PedidoNaoEncontrado);
+                return await Task.FromResult(false);
+            }
+
+            var itensPedido = await _itemPedidoRepository.ObterItensDoPedido(pedido.Id);
+            if (itensPedido == null)
+            {
+                Notificar(MensagemRetorno.ItensPedidoNaoEncontrado);
+                return await Task.FromResult(false);
+            }
+
+            var itensPedidoDTO = new List<ItensDTO>();
+            itensPedido.ToList().ForEach(y =>
+            {
+                var itemPedido = new ItensDTO()
+                {
+                    Nome = y.Produto.Nome,
+                    Quantidade = y.Quantidade,
+                    Valor = y.Produto.TabelaPreco.IsValid ? y.Produto.TabelaPreco.Preco : 0,
+                };
+
+                itensPedidoDTO.Add(itemPedido);
+            });
+
+            var payload = new PedidosDTO 
+            { 
+                NumeroPedido = request.NumeroPedido,
+                ItensPedido = itensPedidoDTO,
+            };
+
+            _messageService.Enqueue(payload);
+
+            return await Task.FromResult(false);
         }
     }
 }
