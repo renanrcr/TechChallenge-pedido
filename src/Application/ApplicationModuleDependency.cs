@@ -1,5 +1,4 @@
-﻿using Application.Services;
-using Domain.Adapters;
+﻿using Domain.Adapters;
 using Domain.Notificacoes;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +9,6 @@ namespace Application
         public static void AddApplicationModule(this IServiceCollection services)
         {
             services.AddScoped<INotificador, Notificador>();
-            services.AddSingleton<IMessageService, MessageService>();
         }
     }
 }

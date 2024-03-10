@@ -1,6 +1,5 @@
 ﻿using Application.AutoMapper;
 using Application.Commands.Pedidos;
-using Application.Services;
 using Application.Services.Handlers;
 using AutoMapper;
 using Domain.Adapters;
@@ -22,8 +21,8 @@ namespace Application.Tests.Services.Handlers
         {
             _pedidoRepository = IPedidoRepositoryMock.GetMock();
             _itemPedidoRepository = IItemPedidoRepositoryMock.GetMock();
+            _messageService = IMessageServiceMock.GetMock();
             _notificador = new Notificador();
-            _messageService = new MessageService();
 
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperConfig>());
             _mapper = config.CreateMapper();
