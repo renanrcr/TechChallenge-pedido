@@ -30,14 +30,21 @@ namespace API.Tests.Controllers
         }
 
         [Fact]
-        public void ItemPedido_DeveRetornarVerdadeiro_QuandoEncontrarItensPedido()
+        public async void ItemPedido_DeveRetornarVerdadeiro_QuandoEncontrarItensPedido()
         {
             //Arrange
+            var itemPedido = _itemPedidoRepository.ObterTodos().Result.FirstOrDefault() ?? new();
+            var command = new CadastraItemPedidoCommand();
+            command.PedidoId = itemPedido.PedidoId;
+            command.ProdutoId = itemPedido.ProdutoId;
+            command.Quantidade = itemPedido.Quantidade;
+            var resultPost = _itemPedidoController.Post(command).Result;
 
             //Act
-            var result = _itemPedidoController.Get().Result;
+            var result = await _itemPedidoController.Get();
 
             //Assert
+            Assert.NotNull(resultPost);
             Assert.NotNull(result);
         }
 

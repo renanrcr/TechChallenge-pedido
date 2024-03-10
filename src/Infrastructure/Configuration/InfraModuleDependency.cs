@@ -14,6 +14,7 @@ namespace Infrastructure.Configuration
             services.AddScoped<IPedidoRepository, PedidoRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IIdentificacaoPedidoRepository, IdentificacaoPedidoRepository>();
+            services.AddSingleton<IMessageService, MessageServiceRepository>();
         }
     }
 }
