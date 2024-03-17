@@ -1,7 +1,6 @@
 using Infrastructure.Configuration;
 using Microsoft.OpenApi.Models;
 using Application;
-using Application.Services.Handlers;
 using API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,9 +14,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.AddSqlServerDbContext();
 
 builder.Services.AddMongoDb();
-
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(Program)));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(PedidoHandler)));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddInfraModule();
