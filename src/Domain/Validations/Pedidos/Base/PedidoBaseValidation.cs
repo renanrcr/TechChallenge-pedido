@@ -8,13 +8,13 @@ namespace Domain.Validations.Pedidos.Base
         public PedidoBaseValidation()
         {
             ValidarId();
-            ValidarIdentificacaoPedido();
+            ValidarCliente();
             ValidarDataCadastro();
         }
 
-        public void ValidarIdentificacaoPedido()
+        public void ValidarCliente()
         {
-            RuleFor(x => x.IdentificacaoPedidoId).NotNull().WithMessage("Informe uma identificação.");
+            RuleFor(x => x.ClienteId).NotNull().WithMessage("Informe o cliente.");
         }
     }
 }

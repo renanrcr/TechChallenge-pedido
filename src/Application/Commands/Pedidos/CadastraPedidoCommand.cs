@@ -5,6 +5,6 @@ namespace Application.Commands.Pedidos
 {
     public class CadastraPedidoCommand : IRequest<PedidoDTO>
     {
-        public Guid IdentificacaoClienteId { get; set; }
+        public Guid ClienteId { get; set; }
     }
 }

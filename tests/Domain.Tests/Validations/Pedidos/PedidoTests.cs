@@ -1,7 +1,7 @@
 using Domain.Adapters;
 using Domain.Entities;
-using Domain.ValueObjects;
 using Infrastructure.Tests.Adapters;
+using Moq;
 
 namespace Domain.Tests.Validations.Pedidos
 {
@@ -19,10 +19,10 @@ namespace Domain.Tests.Validations.Pedidos
         { 
             //Arrange
             Pedido? pedido = await new Pedido().Cadastrar(Guid.NewGuid());
-            Guid produtoId = (_produtoRepository.ObterTodos().Result.FirstOrDefault() ?? new Produto()).Id;
+            var produto = new Mock<Produto>();
 
             //Act
-            ItemPedido? item = new ItemPedido().Cadastrar(_produtoRepository, pedido.Id, produtoId, 1).Result;
+            ItemPedido? item = await new ItemPedido().Cadastrar(pedido.Id, 1, produto.Object);
             
             //Assert
             Assert.Multiple(() =>
@@ -37,10 +37,10 @@ namespace Domain.Tests.Validations.Pedidos
         { 
             //Arrange
             Pedido? pedido = await new Pedido().Cadastrar(Guid.NewGuid());
-            Guid produtoId = Guid.NewGuid();
+            var produto = new Mock<Produto>();
 
             //Act
-            ItemPedido? item = new ItemPedido().Cadastrar(_produtoRepository, pedido.Id, produtoId, 1).Result;
+            ItemPedido? item = await new ItemPedido().Cadastrar(pedido.Id, 1, produto.Object);
             
             //Assert
             Assert.Multiple(() =>

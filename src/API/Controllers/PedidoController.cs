@@ -27,7 +27,7 @@ namespace API.Controllers
             return Ok(entidade);
         }
 
-        [HttpPost]
+        [HttpPost("criar-pedido")]
         public async Task<IActionResult?> Post(CadastraPedidoCommand command)
         {
             if (!ModelState.IsValid) return null;
@@ -39,7 +39,7 @@ namespace API.Controllers
             return Ok(entidade);
         }
 
-        [HttpPost]
+        [HttpPost("confirmar-pedido")]
         public async Task<IActionResult?> CriarPedido(CriarPedidoCommand command)
         {
             if (!ModelState.IsValid) return null;

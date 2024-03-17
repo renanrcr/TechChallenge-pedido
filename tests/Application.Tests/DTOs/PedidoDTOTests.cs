@@ -16,13 +16,11 @@ namespace Application.Tests.DTOs
             // Act
             PedidoDTO pedidoDTO = new PedidoDTO
             {
-                IdentificacaoPedidoId = pedidoID,
                 NumeroPedido = numeroPedido,
                 EstatusPedido = eStatusPedido,
             };
 
             // Assert
-            Assert.Equal(pedidoID, pedidoDTO.IdentificacaoPedidoId);
             Assert.Equal(numeroPedido, pedidoDTO.NumeroPedido);
             Assert.Equal(eStatusPedido, pedidoDTO.EstatusPedido);
         }

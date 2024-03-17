@@ -1,13 +1,29 @@
 ﻿using Domain.Adapters;
-using Infrastructure.RabbitMQ;
 using RabbitMQ.Client;
+using Infrastructure.RabbitMQ;
 
 namespace Infrastructure.Repositories
 {
-    public class MessageServiceRepository : RabbitPublish, IMessageService
+    public class MessageServiceRepository : IMessageServiceRepository
     {
-        public MessageServiceRepository(IModel channel) : base(channel) { }
+        private readonly IRabbitPublish _rabbitPublish;
+        private readonly IModel _channel;
+        public MessageServiceRepository(RabbitMQ.IConnectionFactory connectionFactory, IRabbitPublish rabbitPublish) 
+        {
+            _rabbitPublish = rabbitPublish;
 
-        public bool Enqueue(object messageString) => BasicPublishPedidoCriar(messageString);
+            using IConnection connection = connectionFactory.Get().CreateConnection();
+            using IModel model = connection.CreateModel();
+
+            model.QueueDeclare(queue: "pedido_produzir",
+                                    durable: false,
+                                    exclusive: false,
+                                    autoDelete: false,
+                                    arguments: null);
+
+            _channel = model;
+        }
+
+        public bool Enqueue(object messageString) => _rabbitPublish.BasicPublishPedidoCriar(_channel, messageString);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Domain.Adapters;
 using Domain.Entities;
 using Infrastructure.Tests.Adapters;
+using Moq;
 
 namespace Infrastructure.Tests.Repositories
 {
@@ -53,9 +54,9 @@ namespace Infrastructure.Tests.Repositories
         {
             //Arrange
             Pedido? pedido = await new Pedido().Cadastrar(Guid.NewGuid());
-            Guid produtoId = Guid.NewGuid();
+            var produto = new Mock<Produto>();
 
-            var novoDado = new ItemPedido().Cadastrar(_produtoRepository, pedido.Id, produtoId, 1).Result;
+            var novoDado = await new ItemPedido().Cadastrar(pedido.Id, 1, produto.Object);
 
             //Act
             await _itemPedidoRepository.Adicionar(novoDado);
@@ -75,7 +76,7 @@ namespace Infrastructure.Tests.Repositories
             //Arrange
             Guid id = (_itemPedidoRepository.ObterTodos().Result.FirstOrDefault() ?? new()).Id;
             var dado = await _itemPedidoRepository.ObterPorId(id) ?? new();
-            await dado.Atualizar(_produtoRepository, id, 10);
+            await dado.Atualizar(id, 10);
 
             //Act
             await _itemPedidoRepository.Atualizar(dado);

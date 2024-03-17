@@ -1,7 +1,9 @@
-﻿namespace Infrastructure.RabbitMQ
+﻿using RabbitMQ.Client;
+
+namespace Infrastructure.RabbitMQ
 {
     public interface IRabbitPublish
     {
-        bool BasicPublishPedidoCriar(object messageString);
+        bool BasicPublishPedidoCriar(IModel channel, object messageString);
     }
 }

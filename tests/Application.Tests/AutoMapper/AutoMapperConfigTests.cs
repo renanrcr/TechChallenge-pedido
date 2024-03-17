@@ -1,22 +1,19 @@
 ﻿using Application.AutoMapper;
 using Application.DTOs;
 using AutoMapper;
-using Domain.Adapters;
 using Domain.Entities;
-using Infrastructure.Tests.Adapters;
+using Moq;
 
 namespace Application.Tests.AutoMapper
 {
     public class AutoMapperConfigTests
     {
         private readonly IMapper _mapper;
-        private readonly IProdutoRepository _produtoRepository;
 
         public AutoMapperConfigTests()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperConfig>());
             _mapper = config.CreateMapper();
-            _produtoRepository = IProdutoRepositoryMock.GetMock();
         }
 
         [Fact]
@@ -36,7 +33,8 @@ namespace Application.Tests.AutoMapper
         public async Task MapearItemPedidoParaItemPedidoDto_DeveRetornarVerdadeiro()
         {
             // Arrange
-            ItemPedido itemPedido = await new ItemPedido().Cadastrar(_produtoRepository, Guid.NewGuid(), Guid.NewGuid(), 0);
+            var produto = new Mock<Produto>();
+            ItemPedido itemPedido = await new ItemPedido().Cadastrar(Guid.NewGuid(), 0, produto.Object);
 
             // Act
             ItemPedidoDTO itemPedidoDto = _mapper.Map<ItemPedidoDTO>(itemPedido);

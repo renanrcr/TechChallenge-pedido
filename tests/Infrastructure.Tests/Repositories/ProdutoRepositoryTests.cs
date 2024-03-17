@@ -95,7 +95,7 @@ namespace Infrastructure.Tests.Repositories
 
             //Assert
             Assert.Null(dadoRemovido);
-            Assert.Null((dadoRemovido??new Produto()).ItemPedido);
+            Assert.Null(dadoRemovido);
         }
     }
 }

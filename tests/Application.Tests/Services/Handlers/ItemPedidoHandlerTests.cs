@@ -11,7 +11,6 @@ namespace Application.Tests.Services.Handlers
     public class ItemPedidoHandlerTests
     {
         private readonly IItemPedidoRepository _itemPedidoRepository;
-        private readonly IProdutoRepository _produtoRepository;
         private readonly INotificador _notificador;
         private readonly IMapper _mapper;
         private readonly ItemPedidoHandler _itemPedidoHandler;
@@ -19,13 +18,12 @@ namespace Application.Tests.Services.Handlers
         public ItemPedidoHandlerTests()
         {
             _itemPedidoRepository = IItemPedidoRepositoryMock.GetMock();
-            _produtoRepository = IProdutoRepositoryMock.GetMock();
             _notificador = new Notificador();
 
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperConfig>());
             _mapper = config.CreateMapper();
 
-            _itemPedidoHandler = new ItemPedidoHandler(_notificador, _itemPedidoRepository, _mapper, _produtoRepository);
+            _itemPedidoHandler = new ItemPedidoHandler(_notificador, _itemPedidoRepository, _mapper);
         }
 
         [Fact]

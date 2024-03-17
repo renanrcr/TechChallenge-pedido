@@ -42,7 +42,7 @@ namespace API.Tests.Controllers
             //Arrange
             var pedido = _pedidoRepository.ObterTodos().Result.FirstOrDefault() ?? new();
             var command = new CadastraPedidoCommand();
-            command.IdentificacaoClienteId = pedido.Id;
+            command.ClienteId = pedido.Id;
 
             //Act
             var result = _pedidoController.Post(command).Result;

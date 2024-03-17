@@ -1,6 +1,6 @@
 ﻿namespace Domain.Adapters
 {
-    public interface IMessageService
+    public interface IMessageServiceRepository
     {
         bool Enqueue(object message);
     }

@@ -1,5 +1,6 @@
 ﻿using Domain.Adapters;
 using Infrastructure.Context;
+using Infrastructure.RabbitMQ;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,8 +14,9 @@ namespace Infrastructure.Configuration
             services.AddScoped<IItemPedidoRepository, ItemPedidoRepository>();
             services.AddScoped<IPedidoRepository, PedidoRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
-            services.AddScoped<IIdentificacaoPedidoRepository, IdentificacaoPedidoRepository>();
-            services.AddSingleton<IMessageService, MessageServiceRepository>();
+            services.AddSingleton<IConnectionFactory, ConnectionFactoryCreator>();
+            services.AddSingleton<IRabbitPublish, RabbitPublish>();
+            services.AddSingleton<IMessageServiceRepository, MessageServiceRepository>();
         }
     }
 }

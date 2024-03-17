@@ -15,7 +15,7 @@ namespace Application.Tests.Services.Handlers
         private readonly INotificador _notificador;
         private readonly IMapper _mapper;
         private readonly PedidoHandler _pedidoHandler;
-        private readonly IMessageService _messageService;
+        private readonly IMessageServiceRepository _messageService;
 
         public PedidoHandlerTests()
         {
@@ -37,7 +37,7 @@ namespace Application.Tests.Services.Handlers
 
             var command = new CadastraPedidoCommand()
             {
-               IdentificacaoClienteId = Guid.NewGuid(),
+               ClienteId = Guid.NewGuid(),
             };
 
             //Act
@@ -51,12 +51,11 @@ namespace Application.Tests.Services.Handlers
         public void Pedido_DeveRetornarVerdadeiro_QuandoAtualizar()
         {
             //Arrange
-            var dado = _pedidoHandler.Handle(new CadastraPedidoCommand() {  IdentificacaoClienteId = Guid.NewGuid(), }, default).Result;
+            var dado = _pedidoHandler.Handle(new CadastraPedidoCommand() {  ClienteId = Guid.NewGuid(), }, default).Result;
 
             var command = new AtualizaPedidoCommand()
             {
                 NumeroPedido = dado.NumeroPedido,
-                IdentificacaoPedidoId = dado.IdentificacaoPedidoId,
             };
 
             //Act

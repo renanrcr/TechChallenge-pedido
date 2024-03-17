@@ -3,21 +3,13 @@ using System.Text;
 
 namespace Infrastructure.RabbitMQ
 {
-    public abstract class RabbitPublish : IRabbitPublish
+    public class RabbitPublish : IRabbitPublish
     {
-        public IModel _channel;
-
-        protected RabbitPublish(IModel channel) 
-        {
-            _channel = channel;
-            _channel.CriarFilaPedidoCriar();
-        }
-
-        public bool BasicPublishPedidoCriar(object messageString)
+        public bool BasicPublishPedidoCriar(IModel channel, object messageString)
         {
             var body = Encoding.UTF8.GetBytes("server processed " + messageString);
 
-            _channel.BasicPublish(exchange: "",
+            channel.BasicPublish(exchange: "",
                                 routingKey: "pedido_criar",
                                 basicProperties: null,
                                 body: body);

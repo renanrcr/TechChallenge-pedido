@@ -15,39 +15,37 @@ namespace Application.Services.Handlers
     {
         private readonly IMapper _mapper;
         private readonly IItemPedidoRepository _itemPedidoRepository;
-        private readonly IProdutoRepository _produtoRepository;
 
         public ItemPedidoHandler(INotificador notificador,
             IItemPedidoRepository itemPedidoRepository,
-            IMapper mapper,
-            IProdutoRepository produtoRepository)
+            IMapper mapper)
             : base(notificador)
         {
             _itemPedidoRepository = itemPedidoRepository;
             _mapper = mapper;
-            _produtoRepository = produtoRepository;
         }
 
         public async Task<ItemPedidoDTO> Handle(CadastraItemPedidoCommand request, CancellationToken cancellationToken)
         {
-            var entidade = await new ItemPedido().Cadastrar(_produtoRepository, request.PedidoId, request.ProdutoId, request.Quantidade);
+            var produto = new Produto().NewInstance(request.NomeProduto, request.DescricaoProduto, request.Preco);
+            var itemPedido = await new ItemPedido().Cadastrar(request.PedidoId, request.Quantidade, produto);
 
-            Notificar(entidade.ValidationResult);
+            Notificar(itemPedido.ValidationResult);
 
-            if (entidade.IsValid)
+            if (itemPedido.IsValid)
             {
-                bool inseriuItemPedido = await _itemPedidoRepository.InserirItemPedido(entidade);
+                bool inseriuItemPedido = await _itemPedidoRepository.InserirItemPedido(itemPedido);
                 if (!inseriuItemPedido)
                     Notificar(MensagemRetorno.ErroAoAdicionarItemPedido);
             }
                 
 
-            return _mapper.Map<ItemPedidoDTO>(entidade);
+            return _mapper.Map<ItemPedidoDTO>(itemPedido);
         }
 
         public async Task<ItemPedidoDTO> Handle(AtualizaItemPedidoCommand request, CancellationToken cancellationToken)
         {
-            var entidade = await new ItemPedido().Atualizar(_produtoRepository, request.Id, request.Quantidade);
+            var entidade = await new ItemPedido().Atualizar(request.Id, request.Quantidade);
 
             Notificar(entidade.ValidationResult);
 
@@ -59,7 +57,7 @@ namespace Application.Services.Handlers
 
         public async Task<ItemPedidoDTO> Handle(DeletaItemPedidoCommand request, CancellationToken cancellationToken)
         {
-            var entidade = await new ItemPedido().Deletar(_produtoRepository, request.Id);
+            var entidade = await new ItemPedido().Deletar(request.Id);
 
             Notificar(entidade.ValidationResult);
 

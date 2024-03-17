@@ -14,10 +14,6 @@ namespace Infrastructure.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(10)");
 
-            // 1 : 1 => Pedido : IdentificacaoPedido
-            builder.HasOne(f => f.IdentificacaoPedido)
-                .WithOne(e => e.Pedido);
-
             builder.ToTable("Pedido");
         }
     }

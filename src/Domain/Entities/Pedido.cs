@@ -5,18 +5,16 @@ namespace Domain.Entities
 {
     public class Pedido : EntidadeBase<Guid>
     {
-        public Guid IdentificacaoPedidoId { get; private set; }
+        public Guid ClienteId { get; private set; }
         public string? NumeroPedido { get; private set; }
-        public EStatusPedido StatusPedido { get; set; }
-        public EStatusPagamentoPedido StatusPagamentoPedido { get; set; }
-        public IdentificacaoPedido? IdentificacaoPedido { get; private set; }
-        public ItemPedido? ItemPedido { get; internal set; }
+        public EStatusPedido? StatusPedido { get; set; }
+        public EStatusPagamentoPedido? StatusPagamentoPedido { get; set; }
+        public IList<ItemPedido>? ItensPedido { get; private set; }
 
-        public async Task<Pedido> Cadastrar(Guid identificacaoClienteId)
+        public async Task<Pedido> Cadastrar(Guid clienteId)
         {
             Id = Guid.NewGuid();
-            IdentificacaoPedidoId = identificacaoClienteId;
-            StatusPedido = EStatusPedido.EM_PREPARACAO;
+            ClienteId = clienteId;
             NumeroPedido = RandomString(10);
             DataCadastro = DateTime.Now;
 
@@ -25,11 +23,9 @@ namespace Domain.Entities
             return this;
         }
 
-        public async Task<Pedido> Atualizar(string? numeroPedido, Guid identificacaoPedidoId)
+        public async Task<Pedido> Atualizar(string? numeroPedido)
         {
-            Id = identificacaoPedidoId;
             NumeroPedido = numeroPedido;
-            IdentificacaoPedidoId = identificacaoPedidoId;
             DataAtualizacao = DateTime.Now;
 
             await Validate(this, new AtualizaPedidoValidation());

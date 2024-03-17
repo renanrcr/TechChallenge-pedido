@@ -19,13 +19,13 @@ namespace Application.Services.Handlers
         private readonly IMapper _mapper;
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IItemPedidoRepository _itemPedidoRepository;
-        private readonly IMessageService _messageService;
+        private readonly IMessageServiceRepository _messageService;
 
         public PedidoHandler(INotificador notificador,
             IPedidoRepository pedidoRepository,
             IItemPedidoRepository itemPedidoRepository,
             IMapper mapper,
-            IMessageService messageService)
+            IMessageServiceRepository messageService)
             : base(notificador)
         {
             _pedidoRepository = pedidoRepository;
@@ -36,7 +36,7 @@ namespace Application.Services.Handlers
 
         public async Task<PedidoDTO> Handle(CadastraPedidoCommand request, CancellationToken cancellationToken)
         {
-            var entidade = await new Pedido().Cadastrar(request.IdentificacaoClienteId);
+            var entidade = await new Pedido().Cadastrar(request.ClienteId);
 
             Notificar(entidade.ValidationResult);
 
@@ -52,7 +52,7 @@ namespace Application.Services.Handlers
 
         public async Task<PedidoDTO> Handle(AtualizaPedidoCommand request, CancellationToken cancellationToken)
         {
-            var entidade = await new Pedido().Atualizar(request.NumeroPedido, request.IdentificacaoPedidoId);
+            var entidade = await new Pedido().Atualizar(request.NumeroPedido);
 
             Notificar(entidade.ValidationResult);
 

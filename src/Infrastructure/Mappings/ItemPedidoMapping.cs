@@ -10,14 +10,6 @@ namespace Infrastructure.Mappings
         {
             builder.HasKey(p => p.Id);
 
-            // 1 : 1 => ItemPedido : Pedido
-            builder.HasOne(f => f.Pedido)
-                .WithOne(e => e.ItemPedido);
-
-            // 1 : 1 => ItemPedido : Produto
-            builder.HasOne(f => f.Produto)
-                .WithOne(p => p.ItemPedido);
-
             builder.Property(p => p.Quantidade)
                 .IsRequired()
                 .HasColumnType("decimal(18,4)");

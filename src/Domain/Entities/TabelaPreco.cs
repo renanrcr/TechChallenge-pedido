@@ -4,6 +4,14 @@
     {
         public Guid ProdutoId { get; set; }
         public decimal Preco { get; private set; }
-        public Produto? Produto { get; private set; }
+
+        public TabelaPreco NewInstance(Guid produtoId, decimal preco)
+        {
+            Id = Guid.NewGuid();
+            ProdutoId = produtoId;
+            Preco = preco;
+
+            return this;
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace API.Controllers
             return Ok(_mapper.Map<IEnumerable<ItemPedidoDTO>>(await _itemPedidoRepository.ObterItensDosPedidos()));
         }
 
-        [HttpPost]
+        [HttpPost("add-item")]
         public async Task<IActionResult?> Post(CadastraItemPedidoCommand command)
         {
             if (!ModelState.IsValid) return null;
