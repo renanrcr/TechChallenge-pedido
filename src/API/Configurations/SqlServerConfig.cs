@@ -13,7 +13,7 @@ namespace API.Configurations
             var port = builder.Configuration["DbPort"] ?? "1433"; // Default SQL Server port
             var user = builder.Configuration["DbUser"] ?? "SA"; // Warning do not use the SA account
             var password = builder.Configuration["Password"] ?? "TechChallenge#Lanchonete";
-            var database = builder.Configuration["Database"] ?? "lanchonete";
+            var database = builder.Configuration["Database"] ?? "lanchonete_pedido";
             var connectionStringSQLServer = $"Server={server}, {port};Initial Catalog={database};User ID={user};Password={password};TrustServerCertificate=true";
             
             builder.Services.AddDbContext<DataBaseContext>(options =>

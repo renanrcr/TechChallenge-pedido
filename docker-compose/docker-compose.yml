@@ -18,7 +18,7 @@ services:
         DbPort: "1433"
         DbUser: "SA"
         Password: "TechChallenge#Lanchonete"
-        Database: "lanchonete"
+        Database: "lanchonete_pedido"
     depends_on:
       - sqlserver
       - mongodb
